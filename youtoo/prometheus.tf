@@ -1,4 +1,9 @@
 resource "helm_release" "prometheus_operator_crds" {
+
+  depends_on = [
+    helm_release.cert_manager,
+  ]
+
   name       = "prometheus-operator-crds"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus-operator-crds"
@@ -83,7 +88,7 @@ resource "helm_release" "prometheus_operator" {
   }
 
   values = [
-    file("${path.module}/prometheus-values.yaml")
+    file("${path.module}/prometheus-values.yml")
 
   ]
 

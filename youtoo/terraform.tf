@@ -23,16 +23,25 @@ terraform {
       version = "2.1.3"
     }
 
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "7.1.0"
+    }
+
   }
 
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config" # Points to your local kubeconfig file
+    config_path = "~/.kube/config"
   }
 }
 
 provider "kubectl" {
+}
+
+provider "argocd" {
+  core = true
 }
 

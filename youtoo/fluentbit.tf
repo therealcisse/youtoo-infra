@@ -1,7 +1,7 @@
 resource "helm_release" "fluent_operator" {
   depends_on = [
     helm_release.cert_manager,
-    kubernetes_deployment.youtoo_ingestion,
+    helm_release.prometheus_operator,
   ]
 
   name       = "fluent-operator"

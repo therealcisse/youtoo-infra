@@ -3,7 +3,7 @@ replicaCount: 1
 persistence:
   enabled: true
   size: 100Mi
-  storageClass: standard
+  storageClass: local-path
 
 gelf:
   enabled: true

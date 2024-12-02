@@ -1,4 +1,9 @@
 resource "helm_release" "seq" {
+
+  depends_on = [
+    helm_release.cert_manager,
+  ]
+
   name       = "seq"
   repository = "https://helm.datalust.co"
   chart      = "seq"
@@ -8,7 +13,7 @@ resource "helm_release" "seq" {
   create_namespace = false
 
   values = [
-    file("${path.module}/seq-values.yaml")
+    file("${path.module}/seq-values.yml")
   ]
 
 }
