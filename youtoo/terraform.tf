@@ -23,11 +23,6 @@ terraform {
       version = "2.1.3"
     }
 
-    argocd = {
-      source  = "argoproj-labs/argocd"
-      version = "7.1.0"
-    }
-
   }
 
 }
@@ -41,7 +36,4 @@ provider "helm" {
 provider "kubectl" {
 }
 
-provider "argocd" {
-  core = true
-}
 

@@ -25,32 +25,55 @@ resource "helm_release" "argocd" {
   ]
 }
 
-resource "argocd_application" "youtoo" {
+resource "helm_release" "argocd_apps" {
   depends_on = [
     helm_release.argocd,
   ]
 
-  metadata {
-    name      = "youtoo"
-    namespace = "argocd"
-  }
+  name       = "argocd-apps"
+  namespace  = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argocd-apps"
+  version    = "2.0.2"
 
-  spec {
-    project = "default"
-    source {
-      repo_url        = "https://gitlab.com/therealcisse/youtoo-manifests.git"
-      target_revision = "main"
-      path            = "overlays/app"
-    }
-    destination {
-      server    = "https://kubernetes.default.svc"
-      namespace = "youtoo"
-    }
-    sync_policy {
-      automated {
-        prune     = false
-        self_heal = false
+  values = [
+    yamlencode({
+      applications = {
+        youtoo = {
+          name                  = "youtoo"
+          namespace             = "argocd"
+          additionalLabels      = {}
+          additionalAnnotations = {}
+          finalizers = [
+            "resources-finalizer.argocd.argoproj.io"
+
+          ]
+
+          project = "default"
+
+          source = {
+            repoURL        = "https://gitlab.com/therealcisse/youtoo-manifests.git"
+            targetRevision = "main"
+            path           = "."
+          }
+
+          destination = {
+            server    = "https://kubernetes.default.svc"
+            namespace = "youtoo"
+          }
+
+          syncPolicy = {
+            automated = {
+              prune     = true
+              self_heal = true
+            }
+          }
+
+        }
+
       }
-    }
-  }
+
+    })
+
+  ]
 }

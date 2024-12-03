@@ -9,3 +9,8 @@ variable "cert_manager_release" {
   default = "1.16.2"
 }
 
+variable "log_parser" {
+  type = string
+
+}
+

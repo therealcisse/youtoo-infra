@@ -199,7 +199,7 @@ resource "kubectl_manifest" "fluentbit_input_youtoo" {
         tag                    = "kube.*"
         path                   = "/var/log/containers/youtoo-ingestion-*_${kubernetes_namespace.application_namespace.metadata[0].name}_youtoo-ingestion-*.log"
         readFromHead           = true
-        parser                 = "youtoo-log"
+        parser                 = var.log_parser
         refreshIntervalSeconds = 10
         memBufLimit            = "64MB"
         skipLongLines          = true
@@ -354,7 +354,7 @@ resource "kubectl_manifest" "fluentbit" {
   })
 }
 
-resource "kubectl_manifest" "cluster_parser_log_parser" {
+resource "kubectl_manifest" "cluster_parser_log_parser_docker" {
   depends_on = [
     time_sleep.wait_for_fluentbit_operator,
   ]
@@ -366,7 +366,7 @@ resource "kubectl_manifest" "cluster_parser_log_parser" {
     apiVersion = "fluentbit.fluent.io/v1alpha2"
     kind       = "ClusterParser"
     metadata = {
-      name      = "youtoo-log"
+      name      = "youtoo-log-docker"
       namespace = kubernetes_namespace.telemetry.metadata[0].name
       labels = {
         "fluentbit.fluent.io/enabled" = "true"
@@ -384,6 +384,39 @@ resource "kubectl_manifest" "cluster_parser_log_parser" {
         timeFormat = "%Y-%m-%dT%H:%M:%S.%L%z"
         regex      = "/^(?<timestamp>.+) (?<stream>stdout|stderr) (?<logtag>[FP]) (?<log>.*)$/"
         timeKeep   = false
+      }
+    }
+  })
+}
+
+resource "kubectl_manifest" "cluster_parser_log_parser_json" {
+  depends_on = [
+    time_sleep.wait_for_fluentbit_operator,
+  ]
+
+  server_side_apply = true
+
+
+  yaml_body = yamlencode({
+    apiVersion = "fluentbit.fluent.io/v1alpha2"
+    kind       = "ClusterParser"
+    metadata = {
+      name      = "youtoo-log-json"
+      namespace = kubernetes_namespace.telemetry.metadata[0].name
+      labels = {
+        "fluentbit.fluent.io/enabled" = "true"
+        "fluentbit.fluent.io/mode"    = "k8s"
+      }
+    }
+    spec = {
+      decoders = [
+        {
+          decodeFieldAs = "json log remove_key=true"
+        }
+      ]
+      json = {
+        timeKey    = "time"
+        timeFormat = "%Y-%m-%dT%H:%M:%S %z"
       }
     }
   })
