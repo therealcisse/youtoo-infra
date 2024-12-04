@@ -13,7 +13,7 @@ resource "helm_release" "seq" {
   create_namespace = false
 
   values = [
-    file("${path.module}/seq-values.yml")
+    file("${path.module}/seq-values.yaml")
   ]
 
 }

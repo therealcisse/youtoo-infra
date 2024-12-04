@@ -88,7 +88,7 @@ resource "helm_release" "prometheus_operator" {
   }
 
   values = [
-    file("${path.module}/prometheus-values.yml")
+    file("${path.module}/prometheus-values.yaml")
 
   ]
 

@@ -1,0 +1,9 @@
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+    enableFeatures:
+    - remote-write-receiver
+
+prometheusOperator:
+  enabled: true
+
