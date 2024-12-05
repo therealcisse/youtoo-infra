@@ -23,6 +23,10 @@ terraform {
       version = "2.1.3"
     }
 
+    hcp = {
+      source  = "hashicorp/hcp"
+      version = "0.100.0"
+    }
   }
 
 }
@@ -34,6 +38,9 @@ provider "helm" {
 }
 
 provider "kubectl" {
+}
+
+provider "hcp" {
 }
 
 

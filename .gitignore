@@ -7,6 +7,7 @@ terraform.tfvars
 terraform.tfstate.d
 
 env.tfvars
+.env
 
 # Terraform state files
 terraform.tfstate

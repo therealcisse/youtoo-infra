@@ -20,3 +20,34 @@ variable "doppler_auth_token" {
 
 }
 
+variable "HCP_CLIENT_ID" {
+  type = string
+
+}
+
+variable "HCP_CLIENT_SECRET" {
+  type = string
+
+}
+
+
+variable "HCP_ORG_ID" {
+  type = string
+
+}
+
+variable "HCP_PROJECT_ID" {
+  type = string
+
+}
+
+variable "APP_NAME" {
+  type = string
+
+}
+
+variable "argocd_target_revision" {
+  type    = string
+  default = "main"
+
+}

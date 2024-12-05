@@ -524,6 +524,7 @@ resource "kubectl_manifest" "fluentbit-internal-metrics" {
       prometheusExporter = {
         host = "0.0.0.0"
         port = 2021
+
       }
 
     }
