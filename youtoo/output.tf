@@ -10,4 +10,8 @@
 # output "metrics_server_service_metadata" {
 #   value = helm_release.metrics_server.metadata
 # }
-#
+
+output "secrets" {
+  value     = data.hcp_vault_secrets_app.youtoo.secrets
+  sensitive = true
+}
