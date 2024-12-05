@@ -14,12 +14,6 @@ variable "log_parser" {
 
 }
 
-variable "doppler_auth_token" {
-  type        = string
-  description = "The token for authentication with Doppler"
-
-}
-
 variable "HCP_CLIENT_ID" {
   type = string
 
