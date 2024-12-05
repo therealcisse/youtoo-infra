@@ -15,7 +15,7 @@ variable "log_parser" {
 }
 
 variable "doppler_auth_token" {
-  type = string
+  type        = string
   description = "The token for authentication with Doppler"
 
 }

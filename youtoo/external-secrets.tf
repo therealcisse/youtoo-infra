@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "external_secrets" {
 
 resource "helm_release" "external_secrets" {
   name       = "external-secrets"
-  namespace = kubernetes_namespace.external_secrets.metadata[0].name
+  namespace  = kubernetes_namespace.external_secrets.metadata[0].name
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
   version    = "0.11.0"
@@ -40,7 +40,7 @@ resource "kubectl_manifest" "doppler-secret-store" {
   yaml_body = yamlencode({
     "apiVersion" = "external-secrets.io/v1beta1"
     "kind"       = "SecretStore"
-    "metadata"   = {
+    "metadata" = {
       "name"      = "doppler-secret-store"
       "namespace" = kubernetes_namespace.application_namespace.metadata[0].name
     }
@@ -51,7 +51,7 @@ resource "kubectl_manifest" "doppler-secret-store" {
             "secretRef" = {
               "dopplerToken" = {
                 "name" = "doppler-token-auth-api"
-                "key" = "dopplerToken"
+                "key"  = "dopplerToken"
               }
             }
           }
@@ -72,13 +72,13 @@ resource "kubectl_manifest" "app-secrets" {
   yaml_body = yamlencode({
     "apiVersion" = "external-secrets.io/v1beta1"
     "kind"       = "ExternalSecret"
-    "metadata"   = {
+    "metadata" = {
       "name"      = "app-secrets"
       "namespace" = kubernetes_namespace.application_namespace.metadata[0].name
     }
     "spec" = {
       "refreshInterval" = "1h"
-      "secretStoreRef"  = {
+      "secretStoreRef" = {
         "name" = "doppler-secret-store"
         "kind" = "SecretStore"
       }

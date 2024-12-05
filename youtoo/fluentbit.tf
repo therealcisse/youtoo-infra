@@ -210,6 +210,33 @@ resource "kubectl_manifest" "fluentbit_input_youtoo" {
   })
 }
 
+resource "kubectl_manifest" "fluentbit-input-metrics" {
+  depends_on = [
+    time_sleep.wait_for_fluentbit_operator,
+  ]
+
+  server_side_apply = true
+
+  yaml_body = yamlencode({
+    apiVersion = "fluentbit.fluent.io/v1alpha2"
+    kind       = "ClusterInput"
+    metadata = {
+      name      = "fluentbit-metrics"
+      namespace = kubernetes_namespace.telemetry.metadata[0].name
+      labels = {
+        "fluentbit.fluent.io/enabled" = "true"
+        "fluentbit.fluent.io/mode"    = "k8s"
+      }
+    }
+    spec = {
+      fluentBitMetrics = {
+        tag            = "internal_metrics"
+        scrapeInterval = "15s"
+
+      }
+    }
+  })
+}
 
 # resource "kubectl_manifest" "fluentbit_input_kube" {
 #   depends_on = [
@@ -461,6 +488,42 @@ resource "kubectl_manifest" "cluster_output_youtoo_seq" {
 
         }
 
+      }
+
+    }
+
+  })
+
+}
+
+resource "kubectl_manifest" "fluentbit-internal-metrics" {
+  depends_on = [
+    time_sleep.wait_for_fluentbit_operator,
+  ]
+
+  server_side_apply = true
+
+  yaml_body = yamlencode({
+    apiVersion = "fluentbit.fluent.io/v1alpha2"
+    kind       = "ClusterOutput"
+    metadata = {
+      name      = "fluentbit-internal-metrics"
+      namespace = kubernetes_namespace.telemetry.metadata[0].name
+      labels = {
+        "fluentbit.fluent.io/enabled" = "true"
+        "fluentbit.fluent.io/mode"    = "k8s"
+      }
+    }
+    spec = {
+      match = "internal_metrics"
+
+      # stdout = {
+      #   format = "json_lines"
+      # }
+
+      prometheusExporter = {
+        host = "0.0.0.0"
+        port = 2021
       }
 
     }
