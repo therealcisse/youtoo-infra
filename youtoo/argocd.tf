@@ -53,7 +53,7 @@ resource "helm_release" "argocd_apps" {
 
           source = {
             repoURL        = "https://gitlab.com/therealcisse/youtoo-manifests.git"
-            targetRevision = "main"
+            targetRevision = var.argocd_target_revision
             path           = "overlays/local"
             kustomize      = {}
           }
