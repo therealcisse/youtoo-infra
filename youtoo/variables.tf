@@ -47,7 +47,7 @@ variable "APP_NAME" {
 }
 
 variable "argocd_target_revision" {
-  type = string
+  type    = string
   default = "main"
 
 }
