@@ -45,3 +45,7 @@ variable "argocd_target_revision" {
   default = "main"
 
 }
+
+variable "opensearch_host" {
+  type = string
+}
