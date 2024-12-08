@@ -2,7 +2,7 @@
 
 The project is a list of vital components needed to set up the infrastructure required for our application. Our application itself will be deployed by ArgoCD from another repository but will use these components to provide a microservices architecture.
 
-The application manifests are found at https://gitlab.com/therealcisse/youtoo-manifests.
+The application manifests are found at therealcisse/youtoo-manifests.
 
 1. **[Jaeger](https://www.jaegertracing.io/)**: Configures Jaeger, a distributed tracing system used to monitor and troubleshoot microservices-based applications.
 
