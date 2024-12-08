@@ -66,7 +66,7 @@ resource "helm_release" "argocd_apps" {
           syncPolicy = {
             automated = {
               prune     = true
-              self_heal = true
+              selfHeal = true
             }
           }
 
